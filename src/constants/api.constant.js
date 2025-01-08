@@ -1,0 +1,77 @@
+export const TOKEN_TYPE = "Bearer ";
+export const REQUEST_HEADER_AUTH_KEY = "Authorization";
+
+export const GET_CATEGORIES_TYPE = {
+  AMENITIES: 1,
+  ADD_ONS: 2,
+  ACTIVITES: 3,
+  TAXATION: 4,
+  TAGS: 5,
+  CONTACT: 6,
+};
+
+export const BLOCK_STATUS_ENUMS = {
+  category: 0,
+  service: 1,
+  banner: 2,
+  user: 3,
+  package: 4,
+  employee: 5,
+  discount: 6,
+  taxation: 7,
+  refundRule: 8,
+};
+
+export const APIS = {
+  GET_DASHBOARD_DETAILS: "/admin/getDashboardDetails",
+  GET_REFUND_RULES: "/admin/getRefundRules",
+  ADD_EDIT_REFUND_RULES: "/admin/createRefundRule",
+  ADD_EDIT_TAGS: "admin/addEditTags",
+  GET_SERVICES: "/admin/getServices",
+  GET_PACKAGES: "/admin/getPackages",
+  CREATE_THUBMNAIL: "/createThumbnail",
+  ADD_EDIT_PACKAGES: "/admin/createPackage",
+  ADD_EDIT_APP_CONFIG: "/admin/setSaloonConfig",
+  ADD_EDIT_BUSINESS_PROFILE: "/admin/setBusinessProfile",
+  GET_APP_CONFIG: "/admin/getSaloonConfig",
+  GET_APP_COUNTRY: "/admin/getCountryStateCity",
+  ADD_EDIT_ACTIVITY: "/admin/addEditActivities",
+  GET_SLOTS: "/admin/getSlots",
+  ADD_EDIT_PROPERTY: "/admin/addEditProperty",
+  GET_BANNERS: "/admin/getBanner",
+  ADD_EDIT_BANNERS: "/admin/createBanner",
+  GET_BOOKINGS: "/admin/getOrders",
+  GET_CUSTOMERS: "/admin/getUser",
+  ADD_EDIT_CUSTOMERS: "/admin/addEditUser",
+  GET_EMPLOYEE: "/admin/getEmployee",
+  ADD_EDIT_STAFF: "/admin/addEmployee",
+  ADD_EDIT_CUSTOMERS: "/admin/addCustomers",
+  GET_DISCOUNTS: "/admin/getDiscount",
+  ADD_EDIT_CATEGORY: "/admin/createCategory",
+  ADD_EDIT_SERVICES: "/admin/createService",
+  ADD_EDIT_DISCOUNTS: "admin/createDiscount",
+  ADD_EDIT_BOOKING: "/admin/placeOrder",
+  GET_CATEGORIES: "/admin/getCategories",
+  ADD_EDIT_AMENITIES: "/admin/addEditAmenities",
+  ADD_EDIT_ADDONS: "/admin/addEditAddons",
+  ADD_EDIT_TAXATION: "/admin/createTax",
+  GET_APPLICABLE_TAXES: "/admin/getApplicableTaxes",
+  GET_TAXATION: "/admin/getTaxes",
+
+  UPLOAD_IMAGE: "/api/uploadImage",
+  REMOVE_IMAGE: "/admin/deleteImage",
+  STATUS_DATA: "/admin/block",
+
+  STATE_LIST: "/api/getCountryStateCity",
+  ROOM_AVAILABILITY: "/api/checkRoomAvailability",
+  PROPERTY_AVAILABILITY: "api/checkPackageAvailability",
+  ACTIVITY_AVAILABILITY: "api/checkActivityAvailability",
+  SEND_NOTE: "admin/addOrderNotes",
+
+  GENERATE_PAYMENT_LINK: "/admin/generatePaymentLink",
+  GENERATE_INVOICE: "admin/generateInvoice",
+  CHANGE_PASSWORD: "admin/changePassword",
+  UPDATE_PASSWORD: "api/updatePassword",
+  APPLY_DISCOUNT: "admin/bookingDiscount",
+  MANUAL_PAYMENT: "admin/addManualPayment",
+};
