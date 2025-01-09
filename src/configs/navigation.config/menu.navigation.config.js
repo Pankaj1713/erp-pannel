@@ -50,7 +50,25 @@ const menuNavigationConfig = [
           },
         ],
       },
-
+      {
+        key: "routes.purchase",
+        title: "Purchase",
+        icon: "bag",
+        type: NAV_ITEM_TYPE_COLLAPSE,
+        authority: [ADMIN, USER],
+        isVisible: () => true,
+        subMenu: [
+          {
+            key: "routes.purchaseReturn",
+            path: `${APP_PREFIX_PATH}/purchase-return`,
+            title: "Purchase Return",
+            type: NAV_ITEM_TYPE_ITEM,
+            authority: [ADMIN, USER],
+            isVisible: () => true,
+            subMenu: [],
+          },
+        ],
+      },
       {
         key: "apps.catalogues",
         // path: '',
