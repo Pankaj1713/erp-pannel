@@ -31,6 +31,7 @@ import {
   HiOutlineDatabase,
   HiOutlinePlusCircle,
   HiOutlineTag,
+  HiOutlineShoppingBag
 } from "react-icons/hi";
 import { MdOutlineBookmarks, MdOutlineContentCopy } from "react-icons/md";
 
@@ -71,7 +72,8 @@ const navigationIcon = {
   categories:<HiOutlineTag/>,
   orderManagement:<AiOutlineOrderedList/>,
   userManagement:<HiOutlineUserGroup/>,
-  content:<MdOutlineContentCopy/>
+  content:<MdOutlineContentCopy/>,
+  bag: <HiOutlineShoppingBag />,
 };
 
 export default navigationIcon;

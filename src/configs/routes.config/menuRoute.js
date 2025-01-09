@@ -288,6 +288,17 @@ const menuRoute = [
       headerContainer: true,
     },
   },
+  {
+    key: "routes.purchaseReturn",
+    path: `${APP_PREFIX_PATH}/purchase-return`,
+    component: React.lazy(() => import("views/purchaseReturn")),
+    authority: [ADMIN, USER],
+    show: () => true,
+    meta: {
+      header: "Purchase Return",
+      headerContainer: true,
+    },
+  },
 ];
 
 export default menuRoute;
