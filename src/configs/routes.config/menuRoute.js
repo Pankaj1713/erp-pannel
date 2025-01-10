@@ -299,6 +299,17 @@ const menuRoute = [
       headerContainer: true,
     },
   },
+  {
+    key: "routes.configuration",
+    path: `${APP_PREFIX_PATH}/companySetup`,
+    component: React.lazy(() => import("views/configuration")),
+    authority: [ADMIN, USER],
+    show: () => true,
+    meta: {
+      header: "Configuration",
+      headerContainer: true,
+    },
+  },
 ];
 
 export default menuRoute;
