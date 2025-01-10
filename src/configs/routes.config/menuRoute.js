@@ -300,6 +300,17 @@ const menuRoute = [
     },
   },
   {
+    key: "routes.configuration",
+    path: `${APP_PREFIX_PATH}/companySetup`,
+    component: React.lazy(() => import("views/configuration")),
+    authority: [ADMIN, USER],
+    show: () => true,
+    meta: {
+      header: "Configuration",
+      headerContainer: true,
+    },
+  },
+  {
     key: "routes.purchaseBill",
     path: `${APP_PREFIX_PATH}/purchase-bill`,
     component: React.lazy(() => import("views/purchaseBill")),

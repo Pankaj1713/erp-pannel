@@ -1,76 +1,66 @@
 import React from "react";
-import { Input, Avatar, Upload, FormContainer } from "components/ui";
-import FormDesription from "./FormDesription";
-import FormRow from "./FormRow";
-import { Field, Form, Formik } from "formik";
-import { components } from "react-select";
 import {
-  HiOutlineUserCircle,
-  HiOutlineMail,
-  HiOutlineUser,
-  HiCheck,
-} from "react-icons/hi";
+  Input,
+  Avatar,
+  Upload,
+  FormContainer,
+  Select,
+  Button,
+} from "components/ui";
+import FormDesription from "./FormDesription";
+import { Field, Form, Formik, ErrorMessage } from "formik";
+import { HiOutlineUser } from "react-icons/hi";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
-const { Control } = components;
+import NumberFormat from "react-number-format";
+
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(3, "Too Short!")
-    .max(12, "Too Long!")
-    .required("User Name Required"),
+  firstName: Yup.string().required("First Name is required"),
+  lastName: Yup.string().required("Last Name is required"),
+  pinCode: Yup.string().required("Pin Code is required"),
+  phone: Yup.string()
+    .required("Phone is required")
+    .matches(/^[0-9]+$/, "Only digits are allowed"),
   email: Yup.string().email("Invalid email").required("Email Required"),
-  title: Yup.string(),
-  avatar: Yup.string(),
-  lang: Yup.string(),
-  timeZone: Yup.string(),
-  syncData: Yup.bool(),
+  state: Yup.string().required("State is required"),
+  city: Yup.string().required("City is required"),
 });
 
-const langOptions = [
-  { value: "en", label: "English (US)", imgPath: "/img/countries/us.png" },
-  { value: "ch", label: "中文", imgPath: "/img/countries/cn.png" },
-  { value: "jp", label: "日本语", imgPath: "/img/countries/jp.png" },
-  { value: "fr", label: "French", imgPath: "/img/countries/fr.png" },
-];
-
-const CustomSelectOption = ({ innerProps, label, data, isSelected }) => {
-  return (
-    <div
-      className={`flex items-center justify-between p-2 ${
-        isSelected
-          ? "bg-gray-100 dark:bg-gray-500"
-          : "hover:bg-gray-50 dark:hover:bg-gray-600"
-      }`}
-      {...innerProps}
-    >
-      <div className="flex items-center">
-        <Avatar shape="circle" size={20} src={data.imgPath} />
-        <span className="ml-2 rtl:mr-2">{label}</span>
-      </div>
-      {isSelected && <HiCheck className="text-emerald-500 text-xl" />}
-    </div>
-  );
-};
-
-const CustomControl = ({ children, ...props }) => {
-  const selected = props.getValue()[0];
-  return (
-    <Control {...props}>
-      {selected && (
-        <Avatar
-          className="ltr:ml-4 rtl:mr-4"
-          shape="circle"
-          size={18}
-          src={selected.imgPath}
-        />
-      )}
-      {children}
-    </Control>
-  );
-};
-
 const Profile = () => {
+  const countryOptions = [
+    { value: "India", label: "India" },
+    { value: "United States", label: "United States" },
+    { value: "Japan", label: "Japan" },
+    { value: "France", label: "France" },
+  ];
+
+  const stateOptions = [
+    { value: "Gujarat", label: "Gujarat" },
+    { value: "Rajasthan", label: "Rajasthan" },
+    { value: "Punjab", label: "Punjab" },
+    { value: "Goa", label: "Goa" },
+  ];
+
+  const cityOptions = [
+    { value: "Ahmedabad", label: "Ahmedabad" },
+    { value: "Surat", label: "Surat" },
+    { value: "Rajkot", label: "Rajkot" },
+    { value: "vadodara", label: "vadodara" },
+  ];
+
+  const NumberFormatInput = ({ onValueChange, ...rest }) => {
+    return (
+      <NumberFormat
+        customInput={Input}
+        type='text'
+        onValueChange={onValueChange}
+        autoComplete='off'
+        {...rest}
+      />
+    );
+  };
+
   const data = useSelector((state) => state.auth.user);
 
   const onSetFormFile = (form, field, file) => {
@@ -78,8 +68,13 @@ const Profile = () => {
   };
 
   const initialValues = {
-    name: data?.data?.name,
+    firstName: data?.data?.firstName,
+    lastName: data?.data?.lastName,
+    pinCode: data?.data?.pinCode,
+    phone: data?.data?.phone,
     email: data?.data?.email,
+    state: data?.data?.state,
+    city: data?.data?.city,
   };
   //   const onFormSubmit = (values, setSubmitting) => {
   //     toast.push(<Notification title={"Profile updated"} type="success" />, {
@@ -91,131 +86,298 @@ const Profile = () => {
   return (
     <Formik
       initialValues={initialValues}
-      enableReinitialize
       validationSchema={validationSchema}
-      //   onSubmit={(values, { setSubmitting }) => {
-      //     setSubmitting(true);
-      //     setTimeout(() => {
-      //       onFormSubmit(values, setSubmitting);
-      //     }, 1000);
-      //   }}
+      onSubmit={(values, { setSubmitting, validateForm }) => {
+        validateForm().then((errors) => {
+          if (Object.keys(errors).length === 0) {
+            setSubmitting(true);
+            setSubmitting(false);
+          }
+        });
+      }}
     >
       {({ values, touched, errors, isSubmitting, resetForm }) => {
-        const validatorProps = { touched, errors };
         return (
           <Form>
             <FormContainer>
-              <FormDesription
-                title="General"
-                desc="Basic info, like your name and address that will displayed in public"
-              />
-              <FormRow name="name" label="Name" {...validatorProps}>
-                <Field
-                  type="text"
-                  autoComplete="off"
-                  name="name"
-                  placeholder="Name"
-                  component={Input}
-                  prefix={<HiOutlineUserCircle className="text-xl" />}
-                  disabled
-                />
-              </FormRow>
-              <FormRow name="email" label="Email" {...validatorProps}>
-                <Field
-                  type="email"
-                  autoComplete="off"
-                  name="email"
-                  value={values?.email}
-                  placeholder="Email"
-                  disabled
-                  component={Input}
-                  prefix={<HiOutlineMail className="text-xl" />}
-                />
-              </FormRow>
-              <FormRow name="avatar" label="Avatar" {...validatorProps}>
-                <Field name="avatar">
-                  {({ field, form }) => {
-                    const avatarProps = field.value ? { src: field.value } : {};
-                    return (
-                      <Upload
-                        className="cursor-pointer"
-                        onChange={(files) => onSetFormFile(form, field, files)}
-                        onFileRemove={(files) =>
-                          onSetFormFile(form, field, files)
+              <FormDesription title='Profile' />
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-4'>
+                <div className='flex items-center gap-4'>
+                  <label className='block text-gray-700 font-semibold mb-2'>
+                    Avatar
+                  </label>
+                  <Field name='avatar'>
+                    {({ field, form }) => {
+                      const avatarProps = field.value
+                        ? { src: field.value }
+                        : {};
+                      return (
+                        <Upload
+                          className='cursor-pointer'
+                          onChange={(files) =>
+                            onSetFormFile(form, field, files)
+                          }
+                          onFileRemove={(files) =>
+                            onSetFormFile(form, field, files)
+                          }
+                          showList={false}
+                          uploadLimit={1}
+                        >
+                          <Avatar
+                            className='border-2 border-white dark:border-gray-800 shadow-lg'
+                            size={60}
+                            shape='circle'
+                            icon={<HiOutlineUser />}
+                            {...avatarProps}
+                          />
+                        </Upload>
+                      );
+                    }}
+                  </Field>
+                </div>
+                <div className='flex items-center gap-4'>
+                  <label className='block text-gray-700 font-semibold mb-2'>
+                    Attach signature
+                  </label>
+                  <Field name='signature'>
+                    {({ field, form }) => {
+                      const avatarProps = field.value
+                        ? { src: field.value }
+                        : {};
+                      return (
+                        <Upload
+                          className='cursor-pointer'
+                          onChange={(files) =>
+                            onSetFormFile(form, field, files)
+                          }
+                          onFileRemove={(files) =>
+                            onSetFormFile(form, field, files)
+                          }
+                          showList={false}
+                          uploadLimit={1}
+                        >
+                          <Avatar
+                            className='border-2 border-white dark:border-gray-800 shadow-lg'
+                            size={60}
+                            shape='circle'
+                            icon={<HiOutlineUser />}
+                            {...avatarProps}
+                          />
+                        </Upload>
+                      );
+                    }}
+                  </Field>
+                </div>
+                <div>
+                  <label
+                    className='block text-gray-700 font-semibold mb-2'
+                    htmlFor='firstName'
+                  >
+                    First Name
+                  </label>
+                  <Field name='firstName' as={Input} className='input-class' />
+                  <ErrorMessage
+                    name='firstName'
+                    component='div'
+                    className='error-message text-red-500'
+                  />
+                </div>
+                <div>
+                  <label
+                    className='block text-gray-700 font-semibold mb-2'
+                    htmlFor='lastName'
+                  >
+                    Last Name
+                  </label>
+                  <Field name='lastName' as={Input} className='input-class' />
+                  <ErrorMessage
+                    name='lastName'
+                    component='div'
+                    className='error-message text-red-500'
+                  />
+                </div>
+
+                <div>
+                  <label
+                    className='block text-gray-700 font-semibold mb-2'
+                    htmlFor='country'
+                  >
+                    Country
+                  </label>
+                  <Select
+                    isMulti={false}
+                    defaultOptions
+                    cacheOptions
+                    placeholder='Select Country'
+                    options={countryOptions}
+                    // loadOptions={loadStays}
+                    // componentAs={AsyncSelect}
+                    className='font-semibold'
+                    // onChange={(event) => setUser(event)}
+                    getOptionLabel={(v) => `${v?.label}`}
+                    getOptionValue={(v) => v?.value}
+                    id='gstType'
+                  />
+                </div>
+                <div>
+                  <label
+                    className='block text-gray-700 font-semibold mb-2'
+                    htmlFor='state'
+                  >
+                    State <span className='text-red-500'>*</span>
+                  </label>
+                  <Field name='state'>
+                    {({ field, form }) => (
+                      <Select
+                        isMulti={false}
+                        defaultOptions
+                        cacheOptions
+                        placeholder='Select State'
+                        options={stateOptions}
+                        value={stateOptions.find(
+                          (option) => option.value === field.value
+                        )}
+                        onChange={(option) =>
+                          form.setFieldValue(field.name, option.value)
                         }
-                        showList={false}
-                        uploadLimit={1}
-                      >
-                        <Avatar
-                          className="border-2 border-white dark:border-gray-800 shadow-lg"
-                          size={60}
-                          shape="circle"
-                          icon={<HiOutlineUser />}
-                          {...avatarProps}
-                        />
-                      </Upload>
-                    );
-                  }}
-                </Field>
-              </FormRow>
-              {/* <FormRow name="title" label="Title" {...validatorProps} border={false} >
-								<Field
-									type="text" 
-									autoComplete="off" 
-									name="title" 
-									placeholder="Title" 
-									component={Input}
-									prefix={<HiOutlineBriefcase className="text-xl" />}
-								/>
-							</FormRow> */}
-              {/* <FormDesription
-								className="mt-8"
-								title="Preferences"
-								desc="Your personalized preference displayed in your account"
-							/>
-							<FormRow name="lang" label="Language" {...validatorProps} >
-								<Field name="lang">
-									{({ field, form }) => (
-									<Select
-										field={field}
-										form={form}
-										options={langOptions}
-										components={{ 
-										Option: CustomSelectOption, 
-										Control: CustomControl 
-										}}
-										value={langOptions.filter(option => option.value === values?.lang)}
-										onChange={option => form.setFieldValue(field.name, option.value)}
-									/>
-									)}
-								</Field>
-							</FormRow>
-							<FormRow name="timeZone" label="Time Zone" {...validatorProps} >
-								<Field
-									type="text"
-									readOnly
-									autoComplete="off" 
-									name="timeZone" 
-									placeholder="Time Zone" 
-									component={Input}
-									prefix={<HiOutlineGlobeAlt className="text-xl" />}
-								/>
-							</FormRow>
-							<FormRow name="syncData" label="Sync Data" {...validatorProps} border={false} >
-								<Field name="syncData" component={Switcher} />
-							</FormRow> */}
-              {/* <div className="mt-4 ltr:text-right">
-                <Button
-                  className="ltr:mr-2 rtl:ml-2"
-                  type="button"
-                  onClick={resetForm}
-                >
-                  Reset
-                </Button>
-                <Button variant="solid" loading={isSubmitting} type="submit">
-                  {isSubmitting ? "Updating" : "Update"}
-                </Button>
-              </div> */}
+                        // loadOptions={loadStays}
+                        // componentAs={AsyncSelect}
+                        className='font-semibold'
+                        // onChange={(event) => setUser(event)}
+                        getOptionLabel={(v) => `${v?.label}`}
+                        getOptionValue={(v) => v?.value}
+                        id='gstType'
+                      />
+                    )}
+                  </Field>
+                  <ErrorMessage
+                    name='state'
+                    component='div'
+                    className='error-message text-red-500'
+                  />
+                </div>
+                <div>
+                  <label
+                    className='block text-gray-700 font-semibold mb-2'
+                    htmlFor='city '
+                  >
+                    City <span className='text-red-500'>*</span>
+                  </label>
+                  <Field name='city'>
+                    {({ field, form }) => (
+                      <Select
+                        isMulti={false}
+                        defaultOptions
+                        cacheOptions
+                        placeholder='Select State'
+                        options={cityOptions}
+                        value={cityOptions.find(
+                          (option) => option.value === field.value
+                        )}
+                        onChange={(option) =>
+                          form.setFieldValue(field.name, option.value)
+                        }
+                        // loadOptions={loadStays}
+                        // componentAs={AsyncSelect}
+                        className='font-semibold'
+                        // onChange={(event) => setUser(event)}
+                        getOptionLabel={(v) => `${v?.label}`}
+                        getOptionValue={(v) => v?.value}
+                        id='gstType'
+                      />
+                    )}
+                  </Field>
+                  <ErrorMessage
+                    name='city'
+                    component='div'
+                    className='error-message text-red-500'
+                  />
+                </div>
+                <div>
+                  <label
+                    className='block text-gray-700 font-semibold mb-2'
+                    htmlFor='pinCode'
+                  >
+                    Pin Code
+                  </label>
+                  <NumberFormatInput
+                    // form={form}
+                    // field={field}
+                    // customInput={NumberInput}
+                    placeholder='Pin Code'
+                    // onValueChange={(e) => {
+                    //   form.setFieldValue(field.name, e.value);
+                    // }}
+                  />
+                </div>
+                <div>
+                  <label
+                    className='block text-gray-700 font-semibold mb-2'
+                    htmlFor='phone'
+                  >
+                    Phone
+                  </label>
+                  <Field
+                    name='phone'
+                    as={NumberFormatInput}
+                    className='input-class'
+                  />
+                  <ErrorMessage
+                    name='phone'
+                    component='div'
+                    className='error-message text-red-500'
+                  />
+                </div>
+                <div>
+                  <label
+                    className='block text-gray-700 font-semibold mb-2'
+                    htmlFor='email'
+                  >
+                    Email
+                  </label>
+                  <Field name='email' as={Input} className='input-class' />
+                  <ErrorMessage
+                    name='email'
+                    component='div'
+                    className='error-message text-red-500'
+                  />
+                </div>
+                <div>
+                  <label
+                    className='block text-gray-700 font-semibold mb-2'
+                    htmlFor='Longitude'
+                  >
+                    Longitude
+                  </label>
+                  <Input />
+                </div>
+                <div>
+                  <label
+                    className='block text-gray-700 font-semibold mb-2'
+                    htmlFor='Latitude'
+                  >
+                    Latitude
+                  </label>
+                  <Input />
+                </div>
+                <div>
+                  <label
+                    className='block text-gray-700 font-semibold mb-2'
+                    htmlFor='Address'
+                  >
+                    Address
+                  </label>
+                  <Input textArea />
+                </div>
+                <div className='flex justify-end items-end gap-4'>
+                  <Button size='sm' variant='twoTone' type='button'>
+                    Cancel
+                  </Button>
+                  <Button size='sm' variant='solid' type='submit'>
+                    Upload Profile
+                  </Button>
+                </div>
+              </div>
             </FormContainer>
           </Form>
         );
