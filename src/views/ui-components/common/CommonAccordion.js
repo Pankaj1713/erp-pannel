@@ -5,9 +5,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const CommonAccordion = ({expandIcon=<ExpandMoreIcon />, title, content}) => {
+const CommonAccordion = ({expandIcon=<ExpandMoreIcon />, defaultExpanded=false, title, content}) => {
   return (
-    <Accordion>
+    <Accordion defaultExpanded={defaultExpanded}>
       <AccordionSummary
         expandIcon={expandIcon}
         aria-controls='panel1-content'
