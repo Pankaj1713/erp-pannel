@@ -299,6 +299,17 @@ const menuRoute = [
       headerContainer: true,
     },
   },
+  {
+    key: "routes.purchaseBill",
+    path: `${APP_PREFIX_PATH}/purchase-bill`,
+    component: React.lazy(() => import("views/purchaseBill")),
+    authority: [ADMIN, USER],
+    show: () => true,
+    meta: {
+      header: "Purchase Bill",
+      headerContainer: true,
+    },
+  },
 ];
 
 export default menuRoute;
