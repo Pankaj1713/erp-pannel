@@ -70,6 +70,25 @@ const menuNavigationConfig = [
         ],
       },
       {
+        key: "routes.pointofsale",
+        title: "Point of Sale",
+        icon: "crypto",
+        type: NAV_ITEM_TYPE_COLLAPSE,
+        authority: [ADMIN, USER],
+        isVisible: () => true,
+        subMenu: [
+          {
+            key: "routes.posinvoice",
+            path: `${APP_PREFIX_PATH}/posinvoice`,
+            title: "POS Invoice",
+            type: NAV_ITEM_TYPE_ITEM,
+            authority: [ADMIN, USER],
+            isVisible: () => true,
+            subMenu: [],
+          },
+        ],
+      },
+      {
         key: "apps.catalogues",
         // path: '',
         title: "Catalogues",

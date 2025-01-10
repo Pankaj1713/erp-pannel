@@ -55,7 +55,7 @@ const DataTable = (props) => {
     skeletonAvatarProps,
     pagingData,
     autoResetSelectedRows,
-  } = props;
+} = props;
 
   const { pageSize = 10, pageIndex, total } = pagingData;
 

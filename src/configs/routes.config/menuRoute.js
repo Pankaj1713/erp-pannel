@@ -299,6 +299,13 @@ const menuRoute = [
       headerContainer: true,
     },
   },
+  {
+    key: "routes.posinvoice",
+    path: `${APP_PREFIX_PATH}/posinvoice`,
+    component: React.lazy(() => import("views/posinvoice")),
+    authority: [ADMIN, USER],
+    show: () => true,
+  },
 ];
 
 export default menuRoute;
