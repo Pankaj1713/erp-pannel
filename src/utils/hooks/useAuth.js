@@ -105,6 +105,10 @@ function useAuth() {
   return {
     // authenticated: token && signedIn,
     authenticated: true,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5a0970598754a2e139849aaec1e383e3b1950d9a
     signIn,
     signUp,
     signOut,

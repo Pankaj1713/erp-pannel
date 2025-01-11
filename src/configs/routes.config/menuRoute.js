@@ -300,11 +300,34 @@ const menuRoute = [
     },
   },
   {
+<<<<<<< HEAD
     key: "routes.posinvoice",
     path: `${APP_PREFIX_PATH}/posinvoice`,
     component: React.lazy(() => import("views/posinvoice")),
     authority: [ADMIN, USER],
     show: () => true,
+=======
+    key: "routes.configuration",
+    path: `${APP_PREFIX_PATH}/companySetup`,
+    component: React.lazy(() => import("views/configuration")),
+    authority: [ADMIN, USER],
+    show: () => true,
+    meta: {
+      header: "Configuration",
+      headerContainer: true,
+    },
+  },
+  {
+    key: "routes.purchaseBill",
+    path: `${APP_PREFIX_PATH}/purchase-bill`,
+    component: React.lazy(() => import("views/purchaseBill")),
+    authority: [ADMIN, USER],
+    show: () => true,
+    meta: {
+      header: "Purchase Bill",
+      headerContainer: true,
+    },
+>>>>>>> 5a0970598754a2e139849aaec1e383e3b1950d9a
   },
 ];
 

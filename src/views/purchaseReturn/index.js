@@ -6,10 +6,9 @@ import { Input, Select, DatePicker } from "components/ui";
 // import AsyncSelect from "react-select/async";
 import debounce from "lodash/debounce";
 import SplitSelect from "../ui-components/common/SplitSelect";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import BarChartIcon from "@mui/icons-material/BarChart";
 import NumberFormat from "react-number-format";
+import CommonAccordion from "../ui-components/common/CommonAccordion";
+import LogisticsForm from "./LogisticsForm"; // Adjust the path as necessary
 
 const PurchaseReturn = () => {
   const gstTypeLabels = [
@@ -42,6 +41,47 @@ const PurchaseReturn = () => {
     },
   ];
 
+  const DNOrCNReturnReasonOptions = [
+    { label: "Sales/Return", value: "salesReturn" },
+    { label: "Post Sale Discount", value: "postSaleDiscount" },
+    { label: "Deficiency In Services", value: "deficiencyInServices" },
+    { label: "Correction In Invoice", value: "correctionInInvoice" },
+    { label: "Change In POS", value: "changeInPOS" },
+    {
+      label: "Finalization Of Provisional Assessment",
+      value: "finalizationOfProvisionalAssessment",
+    },
+    { label: "Others", value: "others" },
+    { label: "Expired Stock", value: "expiredStock" },
+    { label: "Breakage Damaged", value: "breakageDamaged" },
+  ];
+
+  const branchOption = [
+    { id: "0002", name: "Bhopal Store" },
+    { id: "0001", name: "Sironj" },
+    { id: "0003", name: "Vidisha Store" },
+  ];
+
+  const warehouseOption = [
+    { id: "0002", name: "Bhopal" },
+    { id: "0001", name: "Sironj" },
+    { id: "0003", name: "Vidisha" },
+  ];
+
+  const supplierOption = [
+    { id: "0002", name: "A.K. BEAS HOSIERY" },
+    { id: "0001", name: "3 Monks Clothing" },
+    { id: "0003", name: "CREATIVEFOLD" },
+  ];
+
+  const agentOption = [{ id: "0002", name: "Default" }];
+
+  const placeOption = [
+    { id: "0002", name: "Delhi" },
+    { id: "0001", name: "Gujarat" },
+    { id: "0003", name: "Punjab" },
+  ];
+
   const loadStaysOption = (inputValue, resolve) => {
     getApi(APIS.GET_CUSTOMERS, { pattern: inputValue }).then((result) => {
       resolve(result?.data?.data);
@@ -67,7 +107,7 @@ const PurchaseReturn = () => {
       <Header />
       <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
         <div className='flex flex-col'>
-          <div>
+          <div className='mb-4'>
             <label
               className='block text-gray-700 font-semibold mb-2'
               htmlFor='userSelect'
@@ -89,7 +129,7 @@ const PurchaseReturn = () => {
               id='gstType'
             />
           </div>
-          <div>
+          <div className='mb-4'>
             <label
               className='block text-gray-700 font-semibold mb-2'
               htmlFor='userSelect'
@@ -111,100 +151,45 @@ const PurchaseReturn = () => {
               id='cashCredit'
             />
           </div>
-          <div>
+          <div className='mb-4'>
             <label
               className='block text-gray-700 font-semibold mb-2'
               htmlFor='userSelect'
             >
               Branch <span className='text-red-500'>*</span>
             </label>
-            <div className='flex items-center justify-between'>
-              <SplitSelect />
-              <IconButton
-                aria-label='delete'
-                sx={{
-                  backgroundColor: "#1976d2",
-                  width: "25px",
-                  height: "25px",
-                  color: "#fff",
-                  borderRadius: "0",
-                  "&:hover": {
-                    backgroundColor: "#115293",
-                  },
-                }}
-              >
-                <EditIcon />
-              </IconButton>
-            </div>
+            <SplitSelect options={branchOption} />
           </div>
-          <div>
+          <div className='mb-4'>
             <label
               className='block text-gray-700 font-semibold mb-2'
               htmlFor='userSelect'
             >
               Warehouse <span className='text-red-500'>*</span>
             </label>
-            <div className='flex items-center justify-between'>
-              <SplitSelect />
-              <IconButton
-                aria-label='delete'
-                sx={{
-                  backgroundColor: "#1976d2",
-                  width: "25px",
-                  height: "25px",
-                  color: "#fff",
-                  borderRadius: "0",
-                  "&:hover": {
-                    backgroundColor: "#115293",
-                  },
-                }}
-              >
-                <EditIcon />
-              </IconButton>
-            </div>
+            <SplitSelect options={warehouseOption} />
           </div>
-          <div>
+          <div className='mb-4'>
+            <label
+              className='block text-gray-700 font-semibold mb-2'
+              htmlFor='userSelect'
+            >
+              Pull From
+            </label>
+            <SplitSelect />
+          </div>
+          <div className='mb-4'>
             <label
               className='block text-gray-700 font-semibold mb-2'
               htmlFor='userSelect'
             >
               Supplier <span className='text-red-500'>*</span>
             </label>
-            <div className='flex items-center justify-between'>
-              <SplitSelect />
-              <IconButton
-                aria-label='delete'
-                sx={{
-                  backgroundColor: "#1976d2",
-                  width: "25px",
-                  height: "25px",
-                  color: "#fff",
-                  borderRadius: "0",
-                  "&:hover": {
-                    backgroundColor: "#115293",
-                  },
-                }}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                aria-label='delete'
-                sx={{
-                  backgroundColor: "red",
-                  width: "25px",
-                  height: "25px",
-                  color: "#fff",
-                  borderRadius: "0",
-                  "&:hover": {
-                    backgroundColor: "#115293",
-                  },
-                }}
-              >
-                <BarChartIcon />
-              </IconButton>
+            <div>
+              <SplitSelect options={supplierOption} BarChartBtn={true} />
             </div>
           </div>
-          <div>
+          <div className='mb-4'>
             <label
               className='block text-gray-700 font-semibold mb-2'
               htmlFor='userSelect'
@@ -215,7 +200,7 @@ const PurchaseReturn = () => {
           </div>
         </div>
         <div className='flex flex-col'>
-          <div>
+          <div className='mb-4'>
             <label
               className='block text-gray-700 font-semibold mb-2'
               htmlFor='dateRange'
@@ -223,7 +208,6 @@ const PurchaseReturn = () => {
               Date
             </label>
             <DatePicker
-              className='mb-4'
               placeholder='Select a date'
               // defaultValue={date}
               inputSize='sm'
@@ -263,14 +247,42 @@ const PurchaseReturn = () => {
               Ref.Date
             </label>
             <DatePicker
-              className='mb-4'
               placeholder='Select a date'
               // defaultValue={date}
               inputSize='sm'
             />
           </div>
-          <div className='mb-4'>Agent </div>
-          <div className='mb-4'>Tax</div>
+          <div className='mb-4'>
+            <label
+              className='block text-gray-700 font-semibold mb-2'
+              htmlFor='dateRange'
+            >
+              Agent
+            </label>
+            <SplitSelect options={agentOption} />
+          </div>
+          <div className='mb-4'>
+            <label
+              className='block text-gray-700 font-semibold mb-2'
+              htmlFor='userSelect'
+            >
+              Tax
+            </label>
+            <Select
+              isMulti={false}
+              defaultOptions
+              cacheOptions
+              placeholder='Select GST Type'
+              options={gstTypeLabels}
+              loadOptions={loadStays}
+              // componentAs={AsyncSelect}
+              className='font-semibold'
+              // onChange={(event) => setUser(event)}
+              getOptionLabel={(v) => `${v?.label}`}
+              getOptionValue={(v) => v?.value}
+              id='gstType'
+            />
+          </div>
           <div className='mb-4'>
             <label
               className='block text-gray-700 font-semibold mb-2'
@@ -297,9 +309,118 @@ const PurchaseReturn = () => {
         </div>
 
         <div className='flex flex-col'>
-         section 3
+          <div className='mb-4'>
+            <CommonAccordion
+              title={"Billing From"}
+              content={
+                <>
+                  <Input textArea />
+                  <div>
+                    <label
+                      className='block text-gray-700 font-semibold mb-2'
+                      htmlFor='dateRange'
+                    >
+                      GST
+                    </label>
+                    <Input />
+                  </div>
+                  <div>
+                    <label
+                      className='block text-gray-700 font-semibold mb-2'
+                      htmlFor='dateRange'
+                    >
+                      Contact Person
+                    </label>
+                    <Input />
+                  </div>
+                  <div className='mb-4'>
+                    <label
+                      className='block text-gray-700 font-semibold mb-2'
+                      htmlFor='dateRange'
+                    >
+                      Place of Supply
+                    </label>
+                    <SplitSelect options={placeOption} />
+                  </div>
+                  <div>
+                    <label
+                      className='block text-gray-700 font-semibold mb-2'
+                      htmlFor='dateRange'
+                    >
+                      eCommerce Inv No
+                    </label>
+                    <Input />
+                  </div>
+                </>
+              }
+            />
+          </div>
+          <div className='mb-4'>
+            <CommonAccordion
+              title={"Shipping From"}
+              content={
+                <>
+                  <div className='mb-4'>
+                    <label
+                      className='block text-gray-700 font-semibold mb-2'
+                      htmlFor='dateRange'
+                    >
+                      Ship To
+                    </label>
+                    <SplitSelect options={agentOption} />
+                  </div>
+                  <Input textArea />
+                </>
+              }
+            />
+          </div>
+          <div className='mb-4'>
+            <label
+              className='block text-gray-700 font-semibold mb-2'
+              htmlFor='dateRange'
+            >
+              Payment Terms
+            </label>
+            <SplitSelect options={agentOption} />
+          </div>
+          <div>
+            <label
+              className='block text-gray-700 font-semibold mb-2'
+              htmlFor='dateRange'
+            >
+              Due Date
+            </label>
+            <DatePicker
+              className='mb-4'
+              placeholder='Select a date'
+              // defaultValue={date}
+              inputSize='sm'
+            />
+          </div>
+          <div className='mb-4'>
+            <label
+              className='block text-gray-700 font-semibold mb-2'
+              htmlFor=' '
+            >
+              DN/CN Return Reason
+            </label>
+            <Select
+              size='sm'
+              isSearchable={false}
+              // value={pageSizeOption.filter(
+              //   (option) => option.value === pageSize
+              // )}
+              options={DNOrCNReturnReasonOptions}
+              // onChange={(option) => handleSelectChange(option.value)}
+            />
+          </div>
         </div>
       </div>
+      <CommonAccordion
+        title='Logistics'
+        defaultExpanded={true}
+        content={<LogisticsForm />}
+      />
     </div>
   );
 };

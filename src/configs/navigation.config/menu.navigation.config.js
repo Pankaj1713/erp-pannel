@@ -67,6 +67,15 @@ const menuNavigationConfig = [
             isVisible: () => true,
             subMenu: [],
           },
+          {
+            key: "routes.purchaseBill",
+            path: `${APP_PREFIX_PATH}/purchase-bill`,
+            title: "Purchase Bill",
+            type: NAV_ITEM_TYPE_ITEM,
+            authority: [ADMIN, USER],
+            isVisible: () => true,
+            subMenu: [],
+          },
         ],
       },
       {
@@ -291,6 +300,7 @@ const menuNavigationConfig = [
           },
         ],
       },
+      
     ],
   },
 ];
